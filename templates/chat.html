@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css'>
+  <!-- <link rel="stylesheet" href="static/style/chat.css"> -->
  </head>
 <body>
 <!-- partial:index.partial.html -->
@@ -13,22 +14,24 @@
 	<div class="row no-gutters">
 	  <div class="col-md-4 border-right">
 		<div class="settings-tray">
-		  <img class="profile-image" src="static/images/logo.png" alt="Profile img">
-		  <span class="settings-tray--right">
-			<!-- <i class="material-icons">cached</i> -->
+		  <!-- <img class="profile-image" src="visual/images/logo.jpg" width="800" height="600"
+      alt="Profile img"> -->
+		  <!-- <span class="settings-tray--right center">
+			<button>Sair</button> -->
+			<!-- <p class="text-muted">Sair</p> -->
 			<!-- <i class="material-icons">message</i> -->
-			<i class="material-icons">Sair</i>
+			<!-- <i class="material-icons">menu</i> -->
 		  </span>
 		</div>
 		<div class="search-box">
 		  <div class="input-wrapper">
-			<i class="material-icons">search</i>
-			<input placeholder="Search here" type="text">
+			<!-- <i class="material-icons">search</i> -->
+			<!-- <input placeholder="" type="text"> -->
 		  </div>
 		</div>
 		<div class="friend-drawer friend-drawer--onhover">
 		  <!-- <img class="profile-image" src="static/images/1.png" alt=""> -->
-		  <div class="text">
+		  <div class="text" id="atendimento1">
 			<h6>Atendimento 1</h6>
 			<p class="text-muted">Hey, you're arrested!</p>
 		  </div>
@@ -71,22 +74,22 @@
 		  <span class="time text-muted small">13:21</span>
 		</div>
 		<hr>
-		<div class="friend-drawer friend-drawer--onhover">
+		<div class="friend-drawer2 friend-drawer2--onhover">
 		  <img class="profile-image" src="" alt="">
 		  <div class="text">
-			<!-- <h5>XXXXX</h5> -->
-			<p class="text-muted">Clique aqui para finalizar o atendimento.</p>
+			<!-- <h6 class="text text-muted center">Finalizar atendimento</h6> -->
+			<p class="friend-drawer2 friend-drawer2--onhover">Finalizar atendimento</p>
 		  </div>
-		  <span class="time text-muted small">13:21</span>
+		  <!-- <span class="time text-muted small">13:21</span> -->
 		</div>
 		</div>
 	  <div class="col-md-8">
-		<div class="settings-tray">
+		<div class="settings-tray2">
 			<div class="friend-drawer no-gutters friend-drawer--grey">
 			<!-- <img class="profile-image" src="static/images/1.png" alt=""> -->
 			<div class="text">
-			  <h6>Atendimento 1</h6>
-			  <p class="text-muted">Seu atendimento iniciou às 13:19 hrs</p>
+			  <h6>Chat</h6>
+			  <p class="text-muted">Atendimento 1</p>
 			</div>
 			<span class="settings-tray--right">
 			  <!-- <i class="material-icons">cached</i> -->
@@ -96,11 +99,19 @@
 		  </div>
 		</div>
 		<div class="chat-panel">
-
+      <div id="mensagens">
+      </div>
+		  <!-- <div class="row no-gutters">
+			<div class="col-md-3 offset-md-9">
+			  <div class="chat-bubble chat-bubble--right">
+				Hello dude!
+			  </div>
+			</div>
+		  </div>
 		  <div class="row no-gutters">
 			<div class="col-md-3 offset-md-9">
 			  <div class="chat-bubble chat-bubble--right">
-				Oi lari
+				Hello dude!
 			  </div>
 			</div>
 		  </div>
@@ -121,29 +132,34 @@
 		  <div class="row no-gutters">
 			<div class="col-md-3">
 			  <div class="chat-bubble chat-bubble--left">
+				Hello dude!
+			  </div>
+			</div>
+		  </div>
+		  <div class="row no-gutters">
+			<div class="col-md-3">
+			  <div class="chat-bubble chat-bubble--left">
+				Hello dude!
+			  </div>
+			</div>
+		  </div>
+		  <div class="row no-gutters">
+			<div class="col-md-3 offset-md-9">
+			  <div class="chat-bubble chat-bubble--right">
 				Hello dude!
 			  </div>
 			</div>
 		  </div> -->
-		  <div class="row no-gutters">
-			<div class="col-md-3">
-			  <div class="chat-bubble chat-bubble--left">
-				Hello dude!
-			  </div>
-			</div>
-		  </div>
-		  <div class="row no-gutters">
-			<div class="col-md-3 offset-md-9">
-			  <div class="chat-bubble chat-bubble--right">
-				Hello dude!
-			  </div>
-			</div>
-		  </div>
 		  <div class="row">
 			<div class="col-12">
 			  <div class="chat-box-tray">
-				<input id="mensagem" type="text" placeholder="Digite sua mensagem aqui" onblur="minhaFuncao"> 
-				<i class="material-icons">send</i>
+				<!-- <input type="text" placeholder="Digite sua mensagem aqui" id="mensagem" onblur="minhaFuncao()"> -->
+				<!-- <input class="form-control" type="text" placeholder="Digite aqui sua mensagem..." id="mensagem" required>
+        <button class="material-icons" type="submit" id="submit">send</button> -->
+        <form class="form-control" id="chatform">
+          <input type=text placeholder="digite sua mensagem aqui" id="mensagem">
+          <button class="material-icons" type=submit id="webapp">send</button>
+        </form>
 			  </div>
 			</div>
 		  </div>
@@ -165,8 +181,14 @@
   background: #fff;
   padding: 0;
   border-radius: 7px;
+  word-wrap: break-word;
 }
+div#mensagens {
+  overflow: auto;
+  word-wrap: break-word;
+  display: flow-root;
 
+};
 .profile-image {
   width: 50px;
   height: 50px;
@@ -174,7 +196,7 @@
 }
 
 .settings-tray {
-  background: #eee;
+  background: #ffffff;
   padding: 10px 15px;
   border-radius: 7px;
 }
@@ -195,9 +217,41 @@
   color: #74b9ff;
   cursor: pointer;
 }
+/* TESTE */
+.settings-tray2 {
+  background: #eeeeee;
+  padding: 10px 15px;
+  border-radius: 7px;
+}
+.settings-tray2 .no-gutters {
+  padding: 0;
+}
+.settings-tray2--right {
+  float: right;
+}
+.settings-tray2--right i {
+  margin-top: 10px;
+  font-size: 25px;
+  color: grey;
+  margin-left: 14px;
+  transition: .3s;
+}
+.settings-tray2--right i:hover {
+  color: #74b9ff;
+  cursor: pointer;
+}
+/* TESTE */
+.chat-panel {
+  display: inline;
+  height: 407px;
+  width: 639.98px;
+
+
+
+}
 
 .search-box {
-  background: #fafafa;
+  background: #ffffff;
   padding: 10px 13px;
 }
 .search-box .input-wrapper {
@@ -205,7 +259,7 @@
   border-radius: 40px;
 }
 .search-box .input-wrapper i {
-  color: grey;
+  color: white;
   margin-left: 7px;
   vertical-align: middle;
 }
@@ -255,6 +309,42 @@ input:focus {
 .friend-drawer--onhover:hover p,
 .friend-drawer--onhover:hover h6,
 .friend-drawer--onhover:hover .time {
+  color: #fff !important;
+}
+/* TESTANDO */
+.friend-drawer2 {
+  padding: 10px 15px;
+  display: flex;
+  /* vertical-align: baseline; */
+  /* background: #fff; */
+  transition: .3s ease;
+  border-radius: 7px;
+}
+.friend-drawer2--grey {
+  background: #eee;
+}
+.friend-drawer2 .text {
+  margin-left: 12px;
+  width: 70%;
+}
+.friend-drawer2 .text h6 {
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+.friend-drawer2 .text p {
+  margin: 0;
+}
+.friend-drawer2 .time {
+  color: grey;
+}
+.friend-drawer2--onhover:hover {
+  background: #ff4040;
+  cursor: pointer;
+  border-radius: 7px;
+}
+.friend-drawer2--onhover:hover p,
+.friend-drawer2--onhover:hover h6,
+.friend-drawer2--onhover:hover .time {
   color: #fff !important;
 }
 
@@ -313,7 +403,7 @@ hr {
   align-items: baseline;
   padding: 10px 15px;
   align-items: center;
-  margin-top: 19px;
+  margin-top: 465px;
   bottom: 0;
 }
 .chat-box-tray input {
@@ -328,18 +418,58 @@ hr {
 .chat-box-tray i:last-of-type {
   margin-left: 25px;
 }
+
+
   </style>
 <!-- partial -->
-  <script>
-	  function minhaFuncao(){
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+  <!-- <script  src="visual/scripts/chat.js"></script> -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+  <script type="text/javascript" charset="utf-8">
 
-		  
-	  }
+    function chatAtendente(msg){
+      return '<div class="row no-gutters"><div class="col-md-3 offset-md-9"><div class="chat-bubble chat-bubble--right">'	+ msg + '</div></div></div>'
+    };
+
+    function chatWhatsapp(msg){
+      return '<div class="row no-gutters"><div class="col-md-3"><div class="chat-bubble chat-bubble--left">'+msg+'</div></div></div>'
+    };
+
+    var socket = io('//' + document.domain + ':' + location.port);
+
+    socket.on('message', function(data) {
+      mensagensDiv.innerHTML+=chatAtendente(data.value)
+      socket.send('message', data);
+    });
+    socket.on('whatsapp', function(data) {
+      mensagensDiv.innerHTML+=chatWhatsapp(data.mensagem)
+    });
+
+    var mensagem=document.querySelector('#mensagem');
+    var chatform=document.querySelector('#chatform');
+    var mensagensDiv=document.querySelector('#mensagens');
+    chatform.addEventListener('submit', function(ev){
+      socket.emit('message', mensagem.value)
+      mensagensDiv.innerHTML+=chatAtendente(mensagem.value)
+      ev.preventDefault()
+    });
+
+    // var atendimento1 = io('//' + document.domain + ':' + location.port + 'atendimento1')
+    //
+    // var mensagensDiv=document.querySelector('#atendimento1');{
+    //   atendimento1.emit('atendimento1', $('#atendimento1'.val()))
+    // })
 
   </script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
-  <script  src="static/js/chat.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+  <script>
+
+  $( '.friend-drawer--onhover' ).on( 'click',  function() {
+
+    $( '.chat-bubble' ).hide('slow').show('slow');
+
+  });
+  </script>
 
 </body>
 </html>
