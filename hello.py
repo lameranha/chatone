@@ -1,99 +1,66 @@
-from flask import Flask, render_template, redirect, render_template, request, session, url_for, g
+from flask import Flask, render_template, request
 from twilio.twiml.messaging_response import MessagingResponse
-from flask_socketio import SocketIO
-from twilio.rest import Client
-import atexit
+from watson import conversa_watson, chamadas_api
+import requests
 import os
-import json
 
-class Usuarios:
-    def __init__(self, id, username, password):
-        self.id = id
-        self.username = username
-        self.password = password
-
-    def __repr__(self):
-        return f'<User: {self.username}>'
-usuarios = []
-usuarios.append(Usuarios(id=1, username='leonardo', password='ozymandias'))
-usuarios.append(Usuarios(id=2, username='larissa', password='ozymandias'))
-usuarios.append(Usuarios(id=3, username='leomar', password='chatone@goop'))
-usuarios.append(Usuarios(id=4, username='rodrigo', password='chatone@goop'))
-usuarios.append(Usuarios(id=5, username='goop', password='chatone@goop'))
-
-online = []
-
-app = Flask(__name__, static_url_path='/static/')
+app = Flask(__name__)
 port = int(os.getenv('PORT', 8000))
-app.secret_key = 'chatone@evox@2020'
-socketio = SocketIO(app)
 
-@app.before_request
-def before_request():
-    if 'user_id' in session:
-        user = [x for x in usuarios if x.id == session['user_id']][0]
-        g.user = usuarios
-        print(usuarios)
-
-@app.route('/', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        session.pop('user_id', None)
-
-        username = request.form['username']
-        password = request.form['password']
-
-        user = [x for x in usuarios if x.username == username][0]
-        if user and user.password == password:
-            session['user_id'] = user.id
-            return redirect(url_for('chat'))
-
-        return redirect(url_for('login'))
-
-    return render_template('login.html')
-
-@app.route('/chat')
-def chat():
-    return render_template('chat.html')
+@app.route('/')
+def render():
+    return render_template('index.html')
 
 @app.route('/chatbot', methods=['POST'])
-def bot():
-    whatsapp_msg = request.values.get('Body', '').lower()
-    whatsapp_user = request.values.get('From', '')
-    print(whatsapp_msg)
+def chatbot():
+
+    # captamos as mensagens enviadas pela twilio
+    mensagem_recebida = request.values.get('Body', '').lower()
+    usuario_recebido = request.values.get('From', '')
     resp = MessagingResponse()
     msg = resp.message()
-    socketio.emit('whatsapp', {'mensagem':whatsapp_msg})
-    return ('enviada')
 
-@socketio.on('message')
-def mensagem_cliente(data):
-    print(request.sid)
-    account_sid = 'ACee0cdfd07fd27a4f98644ecf9aaf739d'
-    auth_token = '2aa27683e177cb361cc28b43e759ca90'
-    client = Client(account_sid, auth_token)
+    # condicional do atendimento humanizado
+    while mensagem_recebida !='7':
 
-    message = client.messages.create(
-                                  from_='whatsapp:+14155238886',
-                                  body=data,
-                                  to='whatsapp:+554791662635'
-                              )
+        # input do usuário -> input do watson
+        print(mensagem_recebida)
+        response = conversa_watson(mensagem_recebida)
 
-    print(message.sid)
+        # conferir se há algo no contexto para o servidor
+        if len(response['context']['skills']['main skill'].values()) != 1:
+            # verificando se alguma das respostas é modelo_api
 
-@socketio.on('whatsapp')
-def mensagem_cliente(data):
-    resp = MessagingResponse()
-    msg = resp.message()
-    msg.body(data.value)
-    return str(resp)
+            for valor in response['context']['skills']['main skill'].values():
+                if valor.get('modelo_api'):
+                    print('tem api')
 
-@socketio.on('atendimento', namespace='atendimento1')
-def receive_username(username):
-    online.append({atendimento : request.sid})
-    print(online)
+                    # usamos a função chamadas_api para realizar todas as chamadas
+                    print('resposta: ' + str(response['context']['skills']['main skill']['user_defined']))
+                    api_response = chamadas_api((response['context']['skills']['main skill']['user_defined']))
+                    str_response = str(api_response)
 
+                    # validação do login:
+                    if str_response == str(b'{"Message":"099|Usu\xc3\xa1rio n\xc3\xa3o localizado."}'): # estudar b string -bytes em python
+                        print('o usuário não logou com sucesso')
+                        response_login= conversa_watson('login_failed')
+                        msg.body(response_login['output']['generic'][0]['text'])
+                        return str(resp)
+                    else:
+                        print('o usuário logou com sucesso')
+                        response_login= conversa_watson('user_loged')
+                        response_index = len(response_login['output']['generic'])
+                        msg.body(response_login['output']['generic'][0]['text'])
+                        return str(resp)
+                    #
+                    # # validação torques
+                    # if str_response == str{}
+
+        # input do watson -> input do usuário
+        msg.body(response['output']['generic'][0]['text'])
+        print(response['context']['skills']['main skill'].values())
+        return str(resp)
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=True)
